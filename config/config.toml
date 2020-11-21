@@ -1,0 +1,44 @@
+# HTTP Server
+[server]
+	Address     = ":8199"
+	ServerAgent = "OpenIm"
+    ServerRoot =  "public" #web根目录位置
+    DumpRouterMap    = true #是否打印路由信息
+
+
+# Logger.
+[logger]
+    Path   = "./log"
+    Level  = "ALL"
+    Stdout = false
+    RotateExpire         = "1d"
+    RotateBackupLimit    = 1
+    RotateBackupExpire   = "7d"
+
+# Template.
+[viewer]
+    Path        = "template"
+    DefaultFile = "index.html"
+    Delimiters  =  ["{{", "}}"]
+
+
+# ttopic服务运行配置，内部socket通信配置
+[topicServer]
+    heartbeat = 5 # 秒(s) 发送心跳包的间隔时间
+    servicetimeout = 8 # 服务端超时时间 超过该时间没有收到client的心跳则断开连接
+    grpcPort = "0.0.0.0:6667"
+    socketPort = "0.0.0.0:6666"
+
+# websocket服务相关连接配置
+
+[websocketServer]
+
+    chanLens = 1000 # channal 缓冲区大小
+    heartbeat = 30 # 心跳间隔 单位秒(s)
+    topicServiceAddr = "0.0.0.0:6666"
+    grpcAddress = "localhost:6667"
+    [websocketServer.bucket]
+        Num = 4 # 启动多少个Bucket
+        CentralChanCount = 100000 # 整台服务器的消息中心处理通道容量
+        BuffChanCount = 1000 # 每个bucket的消息通道容量
+        ConsumerNum = 1 # 每个bucket有多少个消费者同时向socket中推送消息
