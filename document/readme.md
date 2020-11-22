@@ -28,6 +28,19 @@ userName，聊天人的名字
 跟据需要，可以参照web的调用方式，进行使用。支持多人聊天。
 
 
+## 接口说明
+
+/newcount GET类型，检查该用户是否有新聊天记录未读
+
+http://127.0.0.1:8199/newcount?topic=1122&from=张家大公司
+
+/history GET类型，列出历史聊天记录
+
+http://127.0.0.1:8199/history?topic=1122&from=张家大公司
+
+
+
+
 ## 注意事项
 
 请求Header参数
