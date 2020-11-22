@@ -1,3 +1,9 @@
+[system]
+    #api访问密钥，为空不启用密钥检查功能
+    SecretKey = ""
+    #可访问IP白名单，如果为空就是允许全部，空：[] ，赋值例值["xxx.xxx.xxx.xxx","xxx.xxx.xxx.xxx"]
+    whitelist = []
+
 # HTTP Server
 [server]
 	Address     = ":8199"
@@ -42,3 +48,11 @@
         CentralChanCount = 100000 # 整台服务器的消息中心处理通道容量
         BuffChanCount = 1000 # 每个bucket的消息通道容量
         ConsumerNum = 1 # 每个bucket有多少个消费者同时向socket中推送消息
+
+# 数据库配置
+[database]
+    [database.default]
+    link = "./db/openim.db"
+    type = "sqlite"
+    Level  = "all"
+    Debug = true #是否输出SQL信息

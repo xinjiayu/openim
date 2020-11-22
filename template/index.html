@@ -300,6 +300,9 @@ input, button {
 	`
 	dom.innerHTML = dom.innerHTML + newMessage
 
+	var ctime = 0 //记算记录时间的临时值
+
+
 	// var bt = new firetower("ws://firetower-conn.ojbk.io/ws", function(){
 	// 	console.log('建立连接')
 	// 	bt.subscribe(subscribe)
@@ -317,6 +320,69 @@ input, button {
 			</div>
 		`
 		dom.innerHTML = dom.innerHTML + newMessage
+
+		ajax({
+			type:"get",
+			url:"http://127.0.0.1:8199/history",
+			data:{"topic":subscribe},
+			success:function(data){
+				hlist = JSON.parse(data)
+
+				for(var i = 0; i < hlist.data.length;i++){
+
+					if (i===0){
+						ctime = hlist.data[i].sendtime
+					}
+					ta = timeAgo(hlist.data[i].sendtime,ctime)
+					ctime = hlist.data[i].sendtime
+					if(ta>5){
+						var dom = document.getElementById('messageshow')
+						newMessage = `
+						<div class="messageline" align="center"><span>
+								`+getLocalTime(hlist.data[i].sendtime)+`
+						</span></div>`
+
+						dom.innerHTML = dom.innerHTML + newMessage
+						dom.scrollTop = dom.scrollHeight
+					}
+
+
+
+					var dom = document.getElementById('messageshow')
+					var newMessage = ``
+
+					if (hlist.data[i].froma == user){
+						newMessage = `
+				<div class="messageline" align="right">
+					<span class="myinfobox radius">
+					`+hlist.data[i].data+`
+					</span>
+					<span class="from">
+						 `+hlist.data[i].froma+`
+					</span>
+				</div>
+			`
+
+					} else {
+						newMessage = `
+				<div class="messageline" align="left">
+					<span class="from">
+						`+hlist.data[i].froma+`
+					</span>
+					<span class="infobox radius">
+					`+hlist.data[i].data+`
+					</span>
+				</div>
+			`
+					}
+					dom.innerHTML = dom.innerHTML + newMessage
+					dom.scrollTop = dom.scrollHeight
+
+				}
+			}
+		})
+
+
 	})
 
 	bt.onmessage = function(res){
@@ -325,10 +391,30 @@ input, button {
 			// 更新在线人数
 			// document.getElementById('connected').innerHTML = msg.data
 		} else if(msg.type == 'publish'){
+
+			console.log("最后发言时间：",ctime)
+
+			// //显示记录时间
+			// var timestamp = Math.round(new Date().getTime()/1000).toString();//当前时间的时间戳
+			// ta = timeAgo(timestamp,ctime)
+			// if (ta>2){
+			// 	var dom = document.getElementById('messageshow')
+			// 	newMessage = `
+			// 			<div class="messageline" align="center">
+			// 					`+getLocalTime(hlist.data[i].sendtime)+`===`+ta+`
+			// 			</div>`
+			//
+			// 	dom.innerHTML = dom.innerHTML + newMessage
+			// 	dom.scrollTop = dom.scrollHeight
+			// }
+			// ctime = timestamp
+
+
 			var dom = document.getElementById('messageshow')
 			var newMessage = ``
 
 			if (msg.from == user){
+
 				newMessage = `
 				<div class="messageline" align="right">
 					<span class="myinfobox radius">
@@ -401,12 +487,58 @@ input, button {
 
   document.onkeydown = function (event) {
       var e = event || window.event
-      if (e && e.keyCode == 13) { //回车键的键值为13
+      if (e && e.keyCode === 13) { //回车键的键值为13
           send() //调用登录按钮的登录事件
           document.getElementById("sendInput").focus();
       }
   }
 
+	function ajax(options){
+		//创建一个ajax对象
+		var xhr = new XMLHttpRequest() || new ActiveXObject("Microsoft,XMLHTTP");
+		//数据的处理 {a:1,b:2} a=1&b=2;
+		var str = "";
+		for(var key in options.data){
+			str+="&"+key+"="+options.data[key];
+		}
+		str = str.slice(1)
+		if(options.type == "get"){
+			var url = options.url+"?"+str;
+			xhr.open("get",url);
+			xhr.send();
+		}else if(options.type == "post"){
+			xhr.open("post",options.url);
+			xhr.setRequestHeader("content-type","application/x-www-form-urlencoded");
+			xhr.send(str)
+		}
+		//监听
+		xhr.onreadystatechange = function(){
+			//当请求成功的时候
+			if(xhr.readyState == 4 && xhr.status == 200){
+				var d = xhr.responseText;
+				//将请求的数据传递给成功回调函数
+				options.success&&options.success(d)
+			}else if(xhr.status != 200){
+				//当失败的时候将服务器的状态传递给失败的回调函数
+				options.error&&options.error(xhr.status);
+			}
+		}
+	}
+
+	//通过时间戳计算与当前时间的时间差，返回分钟
+	function timeAgo(timeA, timeB) {
+		var time = timeA - timeB;
+		if(null != time && "" != time) {
+			time = parseInt(time / 60.0);
+		}
+		return time;
+	}
+
+	//按本地时间显示
+	function getLocalTime(nS)
+	{
+		return new Date(parseInt(nS) * 1000).toLocaleString().substr(0,17)
+	}
 
 </script>
 </html>

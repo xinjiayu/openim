@@ -17,7 +17,6 @@ func buildManagerClient() {
 	Retry:
 		var err error
 		grpcAddress := g.Config().GetString("websocketServer.grpcAddress")
-		glog.Info("grpcAddress:", grpcAddress)
 		conn, err := grpc.Dial(grpcAddress, grpc.WithInsecure())
 		if err != nil {
 			fmt.Println("[manager client] grpc connect error:", g.Config().GetString("websocketServer.grpcAddress"), err)
@@ -26,7 +25,6 @@ func buildManagerClient() {
 		}
 		topicManageGrpc = pb.NewTopicServiceClient(conn)
 		topicServiceAddr := g.Config().GetString("websocketServer.topicServiceAddr")
-		glog.Info("topicServiceAddr:", topicServiceAddr)
 		topicManage = socket.NewClient(topicServiceAddr)
 
 		topicManage.OnPush(func(sendMessage *socket.SendMessage) {
@@ -35,7 +33,7 @@ func buildManagerClient() {
 		err = topicManage.Connect()
 		if err != nil {
 			glog.Error(err.Error())
-			glog.Info("[manager client] 等待主题管理器联机", g.Config().GetString("websocketServer.topicServiceAddr"))
+			//glog.Info("[manager client] 等待主题管理器联机", g.Config().GetString("websocketServer.topicServiceAddr"))
 			time.Sleep(time.Duration(1) * time.Second)
 			goto Retry
 		} else {

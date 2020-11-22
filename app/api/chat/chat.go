@@ -7,7 +7,9 @@ import (
 	"github.com/gorilla/websocket"
 	"net/http"
 	"openim/app/service/gateway"
+	historyService "openim/app/service/history"
 	"openim/library/algorithm/snowFlake"
+	"openim/library/response"
 	"strconv"
 )
 
@@ -110,4 +112,11 @@ func Websocket(r *ghttp.Request) {
 	})
 
 	tower.Run()
+}
+
+func GetHistory(r *ghttp.Request) {
+	topic := r.GetString("topic")
+	data := historyService.GetDataBeyTopic(topic)
+	response.JsonExit(r, 0, "历史数据", data)
+
 }

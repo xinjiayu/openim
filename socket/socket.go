@@ -3,7 +3,11 @@ package socket
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gogf/gf/encoding/gjson"
+	_ "github.com/mattn/go-sqlite3"
 	"net"
+	"openim/app/model/history"
+	historyService "openim/app/service/history"
 	"sync"
 	"time"
 )
@@ -202,6 +206,18 @@ func (t *TcpClient) Publish(messageId, source, topic string, data json.RawMessag
 	if err != nil {
 		return err
 	}
+
+	//存入数据库
+	jsonData := gjson.New(string(data))
+	hisData := new(history.Entity)
+	hisData.Topic = topic
+	hisData.Type = jsonData.GetString("type")
+	hisData.Data = jsonData.GetString("data")
+	hisData.Froma = jsonData.GetString("from")
+	if hisData.Froma != "" {
+		historyService.Add(hisData)
+	}
+
 	return t.send(b)
 }
 

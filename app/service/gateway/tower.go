@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 	"github.com/golang/glog"
 	"strconv"
@@ -215,6 +216,9 @@ func (t *FireTower) bindTopic(topic []string) ([]string, error) {
 		}
 	}
 	if len(addTopic) > 0 {
+		if topicManage.Conn == nil {
+			return nil, gerror.New("topic服务连接失败！")
+		}
 		config := pb.SubscribeTopicRequest{Topic: addTopic, Ip: topicManage.Conn.LocalAddr().String()}
 		glog.Info(config)
 		_, err := topicManageGrpc.SubscribeTopic(context.Background(), &config)
@@ -392,7 +396,7 @@ func (t *FireTower) readDispose() {
 				// 增加messageId 方便追踪
 				addTopic, err = t.bindTopic(addTopic)
 				if err != nil {
-					fire.Error(err.Error())
+					glog.Error(err.Error())
 				} else if t.subscribeHandler != nil {
 					t.subscribeHandler(fire.Context, addTopic)
 				}

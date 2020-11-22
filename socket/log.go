@@ -58,6 +58,7 @@ func (s *SendMessage) Error(info string) {
 }
 
 func sendLog(s *SendMessage, types, info string) {
+
 	if types == "INFO" {
 		if LogLevel != "INFO" {
 			return

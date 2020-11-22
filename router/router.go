@@ -16,5 +16,11 @@ func init() {
 		s.BindHandler("/index", web.Index)
 		group.ALL("/ws", chat.Websocket)
 
+		group.Group("/", func(group *ghttp.RouterGroup) {
+			group.Middleware(middleware.White, middleware.Auth)
+			group.GET("/history", chat.GetHistory)
+
+		})
+
 	})
 }
