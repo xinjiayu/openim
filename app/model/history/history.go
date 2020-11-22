@@ -4,10 +4,10 @@ import (
 	"github.com/gogf/gf/errors/gerror"
 )
 
-//FindAll
-func GetTopicAllData(topic string) ([]*Entity, error) {
+//GetTopicAllData
+func GetTopicAllData(where ...interface{}) ([]*Entity, error) {
 
-	data, err := Model.FindAll("topic", topic)
+	data, err := Model.FindAll(where)
 	if err != nil {
 		return nil, err
 	}
@@ -18,4 +18,14 @@ func GetTopicAllData(topic string) ([]*Entity, error) {
 
 	return data, nil
 
+}
+
+//GetTopicCount
+func GetTopicCount(where ...interface{}) (int, error) {
+
+	data, err := Model.Count(where)
+	if err != nil {
+		return 0, err
+	}
+	return data, nil
 }

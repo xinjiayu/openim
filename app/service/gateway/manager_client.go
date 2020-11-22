@@ -3,7 +3,7 @@ package gateway
 import (
 	"fmt"
 	"github.com/gogf/gf/frame/g"
-	"github.com/golang/glog"
+	"github.com/gogf/gf/os/glog"
 	"time"
 
 	"google.golang.org/grpc"
@@ -32,8 +32,7 @@ func buildManagerClient() {
 		})
 		err = topicManage.Connect()
 		if err != nil {
-			glog.Error(err.Error())
-			//glog.Info("[manager client] 等待主题管理器联机", g.Config().GetString("websocketServer.topicServiceAddr"))
+			glog.Info("[manager client] 等待主题管理器联机", g.Config().GetString("websocketServer.topicServiceAddr"))
 			time.Sleep(time.Duration(1) * time.Second)
 			goto Retry
 		} else {

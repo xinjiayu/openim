@@ -16,6 +16,13 @@ communicateId ，会话的唯一ID，也可以房间名字
 
 userName，聊天人的名字
 
+
+检查是否有新聊天记录未读
+
+GET方法
+
+http://127.0.0.1:8199/newcount?topic=1122&from=张家大公司  
+
 ```
 
 

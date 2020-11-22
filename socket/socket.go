@@ -174,7 +174,7 @@ func (t *TcpClient) Read() (*SendMessage, error) {
 	}
 	for {
 		message := <-t.readIn
-		if string(message.Type) == "heartbeat" {
+		if message.Type == "heartbeat" {
 			continue
 		}
 		return message, nil

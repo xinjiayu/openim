@@ -285,9 +285,7 @@ input, button {
 	    return rnd;
 	}
 	var subscribe = "{{.communicateId}}"
-	//var user = RndNum(7)
 	var user = "{{.userName}}"
-	// document.getElementById('code').innerHTML = user
 
 	var dom = document.getElementById('messageshow')
 	var newMessage = `
@@ -302,11 +300,6 @@ input, button {
 
 	var ctime = 0 //记算记录时间的临时值
 
-
-	// var bt = new firetower("ws://firetower-conn.ojbk.io/ws", function(){
-	// 	console.log('建立连接')
-	// 	bt.subscribe(subscribe)
-	// })
 	var bt = new firetower("ws://localhost:8199/ws", function(){
 		console.log('建立连接')
 		bt.subscribe([subscribe])
@@ -324,7 +317,7 @@ input, button {
 		ajax({
 			type:"get",
 			url:"http://127.0.0.1:8199/history",
-			data:{"topic":subscribe},
+			data:{"topic":subscribe,"from":user},
 			success:function(data){
 				hlist = JSON.parse(data)
 
@@ -345,8 +338,6 @@ input, button {
 						dom.innerHTML = dom.innerHTML + newMessage
 						dom.scrollTop = dom.scrollHeight
 					}
-
-
 
 					var dom = document.getElementById('messageshow')
 					var newMessage = ``
@@ -393,22 +384,6 @@ input, button {
 		} else if(msg.type == 'publish'){
 
 			console.log("最后发言时间：",ctime)
-
-			// //显示记录时间
-			// var timestamp = Math.round(new Date().getTime()/1000).toString();//当前时间的时间戳
-			// ta = timeAgo(timestamp,ctime)
-			// if (ta>2){
-			// 	var dom = document.getElementById('messageshow')
-			// 	newMessage = `
-			// 			<div class="messageline" align="center">
-			// 					`+getLocalTime(hlist.data[i].sendtime)+`===`+ta+`
-			// 			</div>`
-			//
-			// 	dom.innerHTML = dom.innerHTML + newMessage
-			// 	dom.scrollTop = dom.scrollHeight
-			// }
-			// ctime = timestamp
-
 
 			var dom = document.getElementById('messageshow')
 			var newMessage = ``

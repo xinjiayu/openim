@@ -19,6 +19,7 @@ func init() {
 		group.Group("/", func(group *ghttp.RouterGroup) {
 			group.Middleware(middleware.White, middleware.Auth)
 			group.GET("/history", chat.GetHistory)
+			group.GET("/newcount", chat.GetNewTopicCount)
 
 		})
 

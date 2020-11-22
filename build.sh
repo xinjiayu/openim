@@ -62,6 +62,7 @@ function copyFile() {
     mkdir bin
     cp -r document/. bin/document/
     cp -r template/. bin/template/
+    cp -r public/. bin/public/
     cp -r config/. bin/config/
     cp -r db/. bin/db/
 }

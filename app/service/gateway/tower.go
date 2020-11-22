@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
-	"github.com/golang/glog"
+	"github.com/gogf/gf/os/glog"
 	"strconv"
 	"strings"
 	"sync"
@@ -220,7 +220,6 @@ func (t *FireTower) bindTopic(topic []string) ([]string, error) {
 			return nil, gerror.New("topic服务连接失败！")
 		}
 		config := pb.SubscribeTopicRequest{Topic: addTopic, Ip: topicManage.Conn.LocalAddr().String()}
-		glog.Info(config)
 		_, err := topicManageGrpc.SubscribeTopic(context.Background(), &config)
 		if err != nil {
 			// 订阅失败影响客户端正常业务逻辑 直接关闭连接
@@ -312,7 +311,7 @@ func (t *FireTower) sendLoop() {
 			if message.MessageType == 0 {
 				message.MessageType = 1 // 文本格式
 			}
-			if err := t.ws.WriteMessage(message.MessageType, []byte(message.Data)); err != nil {
+			if err := t.ws.WriteMessage(message.MessageType, message.Data); err != nil {
 				message.Panic(err.Error())
 				goto collapse
 			}

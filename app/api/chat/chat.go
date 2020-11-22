@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"openim/app/service/gateway"
 	historyService "openim/app/service/history"
+	topicinfoService "openim/app/service/topicinfo"
 	"openim/library/algorithm/snowFlake"
 	"openim/library/response"
 	"strconv"
@@ -84,6 +85,7 @@ func Websocket(r *ghttp.Request) {
 
 	tower.SetBeforeSubscribeHandler(func(context *gateway.FireLife, topic []string) bool {
 		// 这里用来判断当前用户是否允许订阅该topic
+
 		return true
 	})
 
@@ -105,7 +107,6 @@ func Websocket(r *ghttp.Request) {
 			var pushmsg = gateway.NewFireInfo(tower, context)
 			pushmsg.Message.Topic = v
 			pushmsg.Message.Data = []byte(fmt.Sprintf("{\"type\":\"onUnsubscribe\",\"data\":%d}", num))
-			fmt.Println(pushmsg)
 			tower.Publish(pushmsg)
 		}
 		return true
@@ -116,7 +117,18 @@ func Websocket(r *ghttp.Request) {
 
 func GetHistory(r *ghttp.Request) {
 	topic := r.GetString("topic")
-	data := historyService.GetDataBeyTopic(topic)
+	from := r.GetString("from")
+
+	data := historyService.GetDataBeyTopic(topic, from)
 	response.JsonExit(r, 0, "历史数据", data)
+
+}
+
+func GetNewTopicCount(r *ghttp.Request) {
+	topic := r.GetString("topic")
+	from := r.GetString("from")
+
+	data := topicinfoService.GetTopicNewCount(topic, from)
+	response.JsonExit(r, 0, "新信息数", data)
 
 }
