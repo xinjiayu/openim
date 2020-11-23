@@ -260,7 +260,7 @@ input, button {
 <body>
 	<div class="box" id="message">
 		<div class="box-title">
-			会话
+			会话   <span style="font-size: 12px;color:green">在线 <span id="connected">1</span></span>
 		</div>
 
 		<div class="box-message" id="messageshow"></div>
@@ -380,7 +380,9 @@ input, button {
 		var msg = JSON.parse(res.data)
 		if(msg.type == 'onSubscribe' || msg.type == 'onUnsubscribe'){
 			// 更新在线人数
-			// document.getElementById('connected').innerHTML = msg.data
+			console.log(msg)
+
+			document.getElementById('connected').innerHTML = msg.data
 		} else if(msg.type == 'publish'){
 
 			console.log("最后发言时间：",ctime)

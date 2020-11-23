@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/os/glog"
 	"github.com/gorilla/websocket"
 	"net/http"
 	"openim/app/service/gateway"
@@ -38,18 +39,6 @@ func init() {
 	gateway.Init()
 }
 
-//func main() {
-//	// 全局唯一id生成器
-//	GlobalIdWorker, _ = snowFlakeByGo.NewWorker(1)
-//	// 如果是集群环境  一定一定要给每个服务设置唯一的id
-//	// 取值范围 1-1024
-//	gateway.ClusterId = 1
-//	gateway.Init()
-//	http.HandleFunc("/ws", Websocket)
-//	fmt.Println("websocket service start: 0.0.0.0:9999")
-//	http.ListenAndServe("0.0.0.0:9999", nil)
-//}
-
 // Websocket http转websocket连接 并实例化firetower
 //func Websocket(w http.ResponseWriter, r *http.Request) {
 func Websocket(r *ghttp.Request) {
@@ -65,7 +54,9 @@ func Websocket(r *ghttp.Request) {
 	tower.SetReadHandler(func(fire *gateway.FireInfo) bool {
 		// 做发送验证
 		// 判断发送方是否有权限向到达方发送内容
-		tower.Publish(fire)
+		if err := tower.Publish(fire); err != nil {
+			glog.Error(err.Error())
+		}
 		return true
 	})
 
@@ -94,9 +85,12 @@ func Websocket(r *ghttp.Request) {
 			num := tower.GetConnectNum(v)
 			// 继承订阅消息的context
 			var pushmsg = gateway.NewFireInfo(tower, context)
+			glog.Info("============", pushmsg)
 			pushmsg.Message.Topic = v
 			pushmsg.Message.Data = []byte(fmt.Sprintf("{\"type\":\"onSubscribe\",\"data\":%d}", num))
-			tower.Publish(pushmsg)
+			if err := tower.Publish(pushmsg); err != nil {
+				glog.Error(err.Error())
+			}
 		}
 		return true
 	})
@@ -107,7 +101,9 @@ func Websocket(r *ghttp.Request) {
 			var pushmsg = gateway.NewFireInfo(tower, context)
 			pushmsg.Message.Topic = v
 			pushmsg.Message.Data = []byte(fmt.Sprintf("{\"type\":\"onUnsubscribe\",\"data\":%d}", num))
-			tower.Publish(pushmsg)
+			if err := tower.Publish(pushmsg); err != nil {
+				glog.Error(err.Error())
+			}
 		}
 		return true
 	})

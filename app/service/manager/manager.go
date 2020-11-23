@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/gogf/gf/errors/gerror"
+	"github.com/gogf/gf/os/glog"
 	"io"
 	"net"
 	"os"
@@ -34,7 +35,7 @@ var (
 	ConnIndexTable sync.Map
 
 	// Logger 接管系统log t log类型 info log信息
-	Logger func(types, info string) = log
+	Logger = log
 	// LogLevel 日志打印级别
 	LogLevel = "INFO"
 	// DefaultWriter 正常日志的默认写入方式
@@ -182,7 +183,9 @@ func (m *Manager) StartGrpcService(port string) {
 	}
 	s := grpc.NewServer()
 	pb.RegisterTopicServiceServer(s, &topicGrpcService{})
-	s.Serve(lis)
+	if err := s.Serve(lis); err != nil {
+		glog.Error(err.Error())
+	}
 }
 
 type connectBucket struct {
@@ -273,7 +276,9 @@ func (c *connectBucket) close() {
 	if !c.isClose {
 		c.isClose = true
 		close(c.closeChan)
-		c.conn.Close()
+		if err := c.conn.Close(); err != nil {
+			glog.Error(err.Error())
+		}
 		c.delRelation() // 删除topic绑定关系
 	}
 	c.mu.Unlock()
@@ -379,7 +384,9 @@ func (c topics) Less(i, j int) bool {
 func HttpDashboard() {
 	// http.HandleFunc("/", Dashboard)
 	http.HandleFunc("/topic", topicWebHandler)
-	http.ListenAndServe(HttpAddress, nil)
+	if err := http.ListenAndServe(HttpAddress, nil); err != nil {
+		glog.Error(err.Error())
+	}
 }
 
 // func Dashboard(w http.ResponseWriter, r *http.Request) {
@@ -425,5 +432,7 @@ func topicWebHandler(w http.ResponseWriter, r *http.Request) {
 		response.Data = string(res)
 	}
 	bytes, _ := json.Marshal(response)
-	w.Write(bytes)
+	if _, err := w.Write(bytes); err != nil {
+		glog.Error(err.Error())
+	}
 }

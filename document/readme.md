@@ -6,10 +6,16 @@ openim 聊天websocket及http服务
 
 TopicServer 主题服务（是支持聊天服务的基础服务，必须运行它）
 
+**Windows 使用说明：**
+
+直接启动 openim 与 TopicServer就可以。
+
+**Linux & Mac 版本使用说明：**
+
 curl.sh openim服务的后台启动脚本
 curltopic.sh TopicServer服务的后台启动脚本。
 
-脚本使用方式：
+脚本使用：
 ```
 ./curl.sh pid|start|stop|restart|status|tail
 

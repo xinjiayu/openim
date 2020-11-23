@@ -6,6 +6,11 @@ openim是分布式推送(IM)服务，完全基于websocket封装，围绕topic�
 
 
 
+##部署架构：
+
+![openim](document/openim.png)
+
+
 
 web示例调用
 
@@ -27,7 +32,5 @@ http://127.0.0.1:8199/newcount?topic=1122&from=张家大公司
 
 
 
-
-
-## 感谢 firetower 项目
+## ##感谢 firetower 项目
 本项目是从[firetower](https://github.com/holdno/firetower) 项目移植过来的。

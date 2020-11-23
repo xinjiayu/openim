@@ -14,8 +14,8 @@ const (
 	// 这里求最大值使用了位运算，-1 的二进制表示为 1 的补码，感兴趣的同学可以自己算算试试 -1 ^ (-1 << nodeBits) 这里是不是等于 1023
 	workerMax   int64 = -1 ^ (-1 << workerBits) // 节点ID的最大值，用于防止溢出
 	numberMax   int64 = -1 ^ (-1 << numberBits) // 同上，用来表示生成id序号的最大值
-	timeShift   uint8 = workerBits + numberBits // 时间戳向左的偏移量
-	workerShift uint8 = numberBits              // 节点ID向左的偏移量
+	timeShift         = workerBits + numberBits // 时间戳向左的偏移量
+	workerShift       = numberBits              // 节点ID向左的偏移量
 	// 41位字节作为时间戳数值的话 大约68年就会用完
 	// 假如你2010年1月1日开始开发系统 如果不减去2010年1月1日的时间戳 那么白白浪费40年的时间戳啊！
 	// 这个一旦定义且开始生成ID后千万不要改了 不然可能会生成相同的ID

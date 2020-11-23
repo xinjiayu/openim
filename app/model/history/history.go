@@ -19,13 +19,3 @@ func GetTopicAllData(where ...interface{}) ([]*Entity, error) {
 	return data, nil
 
 }
-
-//GetTopicCount
-func GetTopicCount(where ...interface{}) (int, error) {
-
-	data, err := Model.Count(where)
-	if err != nil {
-		return 0, err
-	}
-	return data, nil
-}

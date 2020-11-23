@@ -2,6 +2,7 @@ package response
 
 import (
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/os/glog"
 )
 
 // 数据返回通用JSON数据结构
@@ -17,11 +18,13 @@ func Json(r *ghttp.Request, code int, message string, data ...interface{}) {
 	if len(data) > 0 {
 		responseData = data[0]
 	}
-	r.Response.WriteJson(JsonResponse{
+	if err := r.Response.WriteJson(JsonResponse{
 		Code:    code,
 		Message: message,
 		Data:    responseData,
-	})
+	}); err != nil {
+		glog.Error(err.Error())
+	}
 }
 
 // 返回JSON数据并退出当前HTTP执行函数。

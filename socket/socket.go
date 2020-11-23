@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gogf/gf/encoding/gjson"
+	"github.com/gogf/gf/os/glog"
 	_ "github.com/mattn/go-sqlite3"
 	"net"
 	"openim/app/model/history"
@@ -153,7 +154,9 @@ func (t *TcpClient) Close() {
 	if !t.isClose {
 		fmt.Println("socket close")
 		t.isClose = true
-		t.Conn.Close()
+		if err := t.Conn.Close(); err != nil {
+			glog.Error(err.Error())
+		}
 		close(t.closeChan)
 	Retry:
 		err := t.Connect()
@@ -215,7 +218,9 @@ func (t *TcpClient) Publish(messageId, source, topic string, data json.RawMessag
 	hisData.Data = jsonData.GetString("data")
 	hisData.Froma = jsonData.GetString("from")
 	if hisData.Froma != "" {
-		historyService.Add(hisData)
+		if err := historyService.Add(hisData); err != nil {
+			glog.Error(err.Error())
+		}
 	}
 
 	return t.send(b)

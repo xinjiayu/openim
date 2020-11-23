@@ -294,7 +294,9 @@ func (t *FireTower) Close() {
 			}
 			fire.Recycling()
 		}
-		t.ws.Close()
+		if err := t.ws.Close(); err != nil {
+			glog.Error(err.Error())
+		}
 		close(t.closeChan)
 		if t.onOfflineHandler != nil {
 			t.onOfflineHandler()

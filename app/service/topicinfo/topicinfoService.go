@@ -7,7 +7,9 @@ import (
 )
 
 func Add(topicInfoData *topicinfo.Entity) error {
-	topicinfo.Model.Replace(topicInfoData)
+	if _, err := topicinfo.Model.Replace(topicInfoData); err != nil {
+		glog.Error(err.Error())
+	}
 	return nil
 }
 

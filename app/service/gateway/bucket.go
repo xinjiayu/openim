@@ -2,6 +2,7 @@ package gateway
 
 import (
 	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/os/glog"
 	"openim/socket"
 	"sync"
 	"sync/atomic"
@@ -106,6 +107,7 @@ func (b *Bucket) consumer() {
 				b.unSubscribeByUserId(message)
 			case socket.OfflineTopicKey:
 				b.unSubscribeAll(message)
+
 			case socket.OfflineUserKey:
 				b.offlineUsers(message)
 			}
@@ -150,7 +152,9 @@ func (b *Bucket) push(message *socket.SendMessage) error {
 	defer b.mu.RUnlock()
 	if m, ok := b.topicRelevance[message.Topic]; ok {
 		for _, v := range m {
-			v.Send(message)
+			if err := v.Send(message); err != nil {
+				glog.Error(err.Error())
+			}
 		}
 		return nil
 	}
@@ -166,7 +170,9 @@ func (b *Bucket) unSubscribeByUserId(message *socket.SendMessage) error {
 		for _, v := range m {
 			if v.UserId == userId {
 				_, err := v.unbindTopic([]string{message.Topic})
-				v.ToSelf([]byte("{}"))
+				if err := v.ToSelf([]byte("{}")); err != nil {
+					glog.Error(err.Error())
+				}
 				if v.unSubscribeHandler != nil {
 					v.unSubscribeHandler(nil, []string{message.Topic})
 				}

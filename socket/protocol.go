@@ -6,6 +6,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"github.com/gogf/gf/errors/gerror"
+	"github.com/gogf/gf/os/glog"
 )
 
 // 协议中用到的常量
@@ -115,7 +116,9 @@ func IntToBytes(n int) []byte {
 	x := int32(n)
 
 	bytesBuffer := bytes.NewBuffer([]byte{})
-	binary.Write(bytesBuffer, binary.BigEndian, x)
+	if err := binary.Write(bytesBuffer, binary.BigEndian, x); err != nil {
+		glog.Error(err.Error())
+	}
 	return bytesBuffer.Bytes()
 }
 
@@ -124,7 +127,9 @@ func BytesToInt(b []byte) int {
 	bytesBuffer := bytes.NewBuffer(b)
 
 	var x int32
-	binary.Read(bytesBuffer, binary.BigEndian, &x)
+	if err := binary.Read(bytesBuffer, binary.BigEndian, &x); err != nil {
+		glog.Error(err.Error())
+	}
 
 	return int(x)
 }

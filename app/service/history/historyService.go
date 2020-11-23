@@ -1,6 +1,7 @@
 package historyService
 
 import (
+	"github.com/gogf/gf/os/glog"
 	"github.com/gogf/gf/os/gtime"
 	"github.com/gogf/gf/util/gconv"
 	"openim/app/model/history"
@@ -11,7 +12,9 @@ import (
 func Add(historyData *history.Entity) error {
 
 	historyData.Sendtime = gconv.Int(gtime.Now().Unix())
-	history.Model.Insert(historyData)
+	if _, err := history.Model.Insert(historyData); err != nil {
+		glog.Error(err.Error())
+	}
 
 	//更新topic信息状态
 	topicInfo := new(topicinfo.Entity)
@@ -20,7 +23,9 @@ func Add(historyData *history.Entity) error {
 	topicInfo.Num = 0
 	topicInfo.Sendtime = historyData.Sendtime
 	if topicInfo.Froma != "" {
-		topicinfoService.Add(topicInfo)
+		if err := topicinfoService.Add(topicInfo); err != nil {
+			glog.Error(err.Error())
+		}
 	}
 
 	return nil
@@ -36,7 +41,9 @@ func GetDataBeyTopic(topic, from string) []*history.Entity {
 	topicInfo.Num = 0
 	topicInfo.Sendtime = gconv.Int(gtime.Now().Unix())
 	if topicInfo.Froma != "" {
-		topicinfoService.Add(topicInfo)
+		if err := topicinfoService.Add(topicInfo); err != nil {
+			glog.Error(err.Error())
+		}
 	}
 
 	return data
