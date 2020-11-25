@@ -1,294 +1,362 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-	<meta charset="UTF-8">
-	<title>站内交流</title>
+    <meta charset="utf-8">
+    <meta name="aplus-terminal" content="1">
+    <meta name="apple-mobile-web-app-title" content="">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="format-detection" content="telephone=no, address=no">
+    <title>会话</title>
+    <style type="text/css">
+        /*公共样式*/
+        body, h1, h2, h3, h4, p, ul, ol, li, form, button, input, textarea, th, td {
+            margin: 0;
+            padding: 0
+        }
+
+        body, button, input, select, textarea {
+            font: 12px/1.5 Microsoft YaHei UI Light, tahoma, arial, "\5b8b\4f53";
+            *line-height: 1.5;
+            -ms-overflow-style: scrollbar
+        }
+
+        h1, h2, h3, h4 {
+            font-size: 100%
+        }
+
+        ul, ol {
+            list-style: none
+        }
+
+        a {
+            text-decoration: none
+        }
+
+        a:hover {
+            text-decoration: underline
+        }
+
+        img {
+            border: 0
+        }
+
+        button, input, select, textarea {
+            font-size: 100%
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0
+        }
+
+        /*rem*/
+        html {
+            font-size: 62.5%;
+        }
+
+        body {
+            font: 16px/1.5 "microsoft yahei", 'tahoma';
+        }
+
+        body .mobile-page {
+            font-size: 1.6rem;
+        }
+
+        /*浮动*/
+        .fl {
+            float: left;
+        }
+
+        .fr {
+            float: right;
+        }
+
+        .clearfix:after {
+            content: '';
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+        }
+
+        body {
+            background-color: #F5F5F5;
+        }
+
+        .mobile-page {
+            max-width: 100%;
+        }
+
+        .mobile-page .admin-img, .mobile-page .user-img {
+            width: 45px;
+            height: 45px;
+        }
+
+        i.triangle-admin, i.triangle-user {
+            width: 0;
+            height: 0;
+            position: absolute;
+            top: 10px;
+            display: inline-block;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+        }
+
+        .mobile-page i.triangle-admin {
+            left: 4px;
+            border-right: 12px solid #fff;
+        }
+
+        .mobile-page i.triangle-user {
+            right: 4px;
+            border-left: 12px solid #9EEA6A;
+        }
+
+        .mobile-page .admin-group, .mobile-page .user-group {
+            padding: 6px;
+            display: flex;
+            display: -webkit-flex;
+        }
+
+        .mobile-page .admin-group {
+            justify-content: flex-start;
+            -webkit-justify-content: flex-start;
+        }
+
+        .mobile-page .user-group {
+            justify-content: flex-end;
+            -webkit-justify-content: flex-end;
+        }
+
+        .mobile-page .admin-reply, .mobile-page .user-reply {
+            display: inline-block;
+            padding: 8px;
+            border-radius: 4px;
+            background-color: #fff;
+            margin: 0 15px 12px;
+        }
+
+        .mobile-page .admin-reply {
+            word-break: break-all;
+            box-shadow: 0px 0px 2px #ddd;
+        }
+
+        .mobile-page .user-reply {
+            word-break: break-all;
+            min-height: 30px;
+            text-align: left;
+            background-color: #9EEA6A;
+            box-shadow: 0px 0px 2px #bbb;
+        }
+
+        .mobile-page .user-msg, .mobile-page .admin-msg {
+            width: 75%;
+            position: relative;
+        }
+
+        .mobile-page .user-msg {
+            word-break: break-all;
+            min-height: 30px;
+            text-align: right;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .box {
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            padding: 66px 0 30px;
+            box-sizing: border-box;
+        }
+
+        .box-message {
+            width: 100%;
+            height: 100%;
+            padding: 15px;
+            padding-bottom: 60px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .box-title {
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            font-size: 22px;
+            color: #000000;
+            background-color: #cecece;
+            text-align: center;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .box-bottom {
+            background-color: #eeeeee;
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            z-index: 999;
+            box-sizing: border-box;
+            padding-right: 5px;
+            padding-left: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .box-bottom button {
+            color: #000;
+            width: 55px;
+            height: 26px;
+            border: 1px solid #cccccc;
+            padding: 3px 5px;
+            background: none;
+            margin: 0 5px;
+            background: #fff;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .box-bottom .hasimage {
+            width: 40px;
+            padding: 0;
+            vertical-align: top;
+        }
+
+        .box-bottom button img {
+            width: 100%;
+            height: 18px;
+            vertical-align: top;
+        }
+
+        .box-bottom input {
+            flex: 1;
+            height: 30px;
+            line-height: 30px;
+            border: 1px;
+            background: none;
+            color: #000;
+        }
+
+        .point {
+            cursor: pointer;
+        }
+
+        input, button {
+            outline: none;
+        }
+
+    </style>
 </head>
-<style>
-html, body {
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-	background-color: #000;
-	margin: 0;
-	padding: 0;
-}
-.box {
-	width: 100%;
-	height: 100%;
-	margin: 0 auto;
-	position: relative;
-	overflow: hidden;
-	padding: 66px 0 30px;
-	box-sizing: border-box;
-}
-.box-message {
-	width: 100%;
-	height: 100%;
-	padding: 15px;
-	box-sizing: border-box;
-	overflow-y: auto;
-}
-
-.box-bottom {
-	width: 100%;
-	height: 40px;
-	line-height: 40px;
-	position: absolute;
-	left: 0;
-	bottom: 0;
-	z-index: 999;
-	box-sizing: border-box;
-	padding-right: 50px;
-	padding-left: 15px;
-}
-
-.box-bottom button {
-	color: #fff;
-	width: 50px;
-	height: 30px;
-	border: none;
-	background: none;
-	position: absolute;
-	right: 0;
-	bottom: 0;
-}
-.box-bottom input {
-	width: 100%;
-	height: 30px;
-	line-height: 30px;
-	border: none;
-	background: none;
-	color: #fff;
-}
-.box-title {
-	width: 100%;
-	height: 50px;
-	line-height: 50px;
-	font-size: 22px;
-	color: #fff;
-	text-align: center;
-	position: absolute;
-	left: 0;
-	top: 0;
-}
-.box-user {
-	width: 100%;
-	height: 16px;
-	line-height: 16px;
-	font-size: 14px;
-	text-align: left;
-	padding: 0 15px;
-	box-sizing: border-box;
-	position: absolute;
-	top: 50px;
-	left: 0;
-	color: #fff;
-	overflow: hidden;
-}
-.messageline {
-	width: 100%;
-	line-height: 26px;
-	color: #73bf00;
-	height: 40px;
-}
-
-.messageline span {
-	color: #fff;
-}
-
-.point {
-  cursor: pointer;
-}
-
-input, button {
-	outline: none;
-}
-
-.title {
-	float: left;
-}
-
-.add-room {
-	float: right;
-	cursor: pointer;
-}
-
-.dialog {
-	opacity: 0;
-	transition: .5s;
-}
-
-.dialog .fire-modal-wrap {
-	position: fixed;
-	overflow: auto;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	z-index: 1000;
-	-webkit-overflow-scrolling: touch;
-	outline: 0;
-}
-
-.dialog .dialog-content {
-	position: fixed;
-	right: 0;
-	left: 0;
-	top: 150px;
-	margin: 0 auto;
-	z-index: 1001;
-	width: 80%;
-	background: #fff;
-	border-radius: 10px;
-	overflow: hidden;
-	box-sizing: border-box;
-	padding: 16px;
-	font-size: 12px;
-	line-height: 1.5;
-}
-
-.dialog .mask {
-	position: fixed;
-	top: 0;
-	right: 0;
-	left: 0;
-	bottom: 0;
-	z-index: 1000;
-	width: 100%;
-	height: 100%;
-	background: rgba(55,55,55,.6);
-}
-
-.dialog-hidden {
-	display: none !important;
-}
-
-.input-body {
-	display: inline-block;
-	box-sizing: border-box;
-	width: 100%;
-	position: relative;
-	vertical-align: middle;
-	line-height: normal;
-}
-
-.input-body .label {
-  line-height: 30px;
-}
-
-.fire-input {
-	display: inline-block;
-	box-sizing: border-box;
-  width: 100%;
-  height: 32px;
-  line-height: 1.5;
-  padding: 4px 7px;
-  font-size: 12px;
-  border: 1px solid #dcdee2;
-  border-radius: 4px;
-  color: #515a6e;
-  background-color: #fff;
-  background-image: none;
-  position: relative;
-  cursor: text;
-  transition: border .2s ease-in-out,background .2s ease-in-out,box-shadow .2s ease-in-out;
-}
-
-.dialog-footer {
-	margin-top: 20px;
-  text-align: right;
-}
-
-.radius{
-	-webkit-border-radius:5px;
-	-moz-border-radius:5px;
-	border-radius:5px;
-}
-
-.infobox{
-	background-color: #727372;
-	height: 35px;
-	margin: 3px;
-	color: white;
-	padding:0px 8px 0px 8px;
-
-}
-.myinfobox{
-	background-color: #5e960a;
-	height: 35px;
-	margin: 3px;
-	color: black;
-	padding:0px 8px 0px 8px;
-
-}
-
-.fire-button-default {
-	color: #515a6e;
-  background-color: #fff;
-  border-color: #dcdee2;
-}
-
-.fire-button-primary {
-	color: #fff;
-  background-color: #409eff;
-  border-color: #409eff;
-}
-
-.fire-button {
-	display: inline-block;
-  margin-bottom: 0;
-  font-weight: 400;
-  text-align: center;
-  -ms-touch-action: manipulation;
-  touch-action: manipulation;
-  cursor: pointer;
-  background-image: none;
-  border: 1px solid transparent;
-  white-space: nowrap;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  padding: 5px 15px 6px;
-  font-size: 12px;
-  border-radius: 4px;
-  transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
-}
-
-</style>
 <body>
-	<div class="box" id="message">
-		<div class="box-title">
-			会话   <span style="font-size: 12px;color:green">在线 <span id="connected">1</span></span>
-		</div>
+<div class="box mobile-page" id="message">
+    <div class="box-title">
+        会话 <span style="font-size: 12px;color:green">在线 <span id="connected">1</span></span>
+    </div>
 
-		<div class="box-message" id="messageshow"></div>
-		<div class="box-bottom">
-			<input value="" placeholder="点击输入信息" id="sendInput"/>
-			<button onclick="send()" class="point">发送</button>
-		</div>
-	</div>
+    <div class="box-message" id="messageshow"></div>
+    <div class="box-bottom">
+        <input value="" placeholder="点击输入信息" id="sendInput"/>
+        <button onclick="send()" class="point">发送</button>
+        <button onclick="sendImg()" class="point hasimage"><img src="img/image.svg" alt="图片"></button>
+    </div>
+</div>
 
+<form name="form01" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="xx" value="1"/>
+    图片<input type="file" id="fileInput" name="upload-file" onchange="submitform()"/>
+</form>
 </body>
+
 <script type="text/javascript" src="js/firetower_v0.1.js"></script>
+
 <script type="text/javascript">
-    window.onresize = function(){
+    function submitform() {
+        var file = document.getElementById('fileInput').files[0]
+        var formData = new FormData()
+        formData.append('upload-file', file)
+        ajax({
+            type: "file",
+            url: "http://myword.server.mydig.net/upload",
+            data: formData,
+            success: function (res) {
+                var imgData = JSON.parse(res)
+                console.log(imgData)
+                bt.publish(subscribe, {
+                    from: user,
+                    data: imgData.data,
+                    type: 'publish'
+                })
+            }
+        })
+    }
+
+    function outHtml(viewType, data) {
+
+        if (viewType == "right") {
+
+
+            var out = `
+
+                 <div class="user-group">
+                      <div class="user-msg">
+                            <span class="user-reply">` + data + `</span>
+                            <i class="triangle-user"></i>
+                      </div>
+                       <img class="user-img" src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1981173040,2033773509&fm=11&gp=0.jpg"/>
+                 </div>
+
+
+                    `
+
+        } else {
+            var out = `
+
+                     <div class="admin-group">
+                           <img class="admin-img" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1724480241,3884046259&fm=26&gp=0.jpg"/>
+                           <div class="admin-msg">
+                                <i class="triangle-admin"></i>
+                                <span class="admin-reply">` + data + `</span>
+                           </div>
+                     </div>
+
+
+                    `
+
+        }
+
+
+        var dom = document.getElementById('messageshow')
+        dom.innerHTML = dom.innerHTML + out
+        dom.scrollTop = dom.scrollHeight
+
+    }
+
+    window.onresize = function () {
         var dom = document.getElementById('messageshow')
         dom.scrollTop = dom.scrollHeight
     }
 
-	function RndNum(n){
-	    var rnd="";
-	    for(var i=0;i<n;i++)
-	        rnd+=Math.floor(Math.random()*10);
-	    return rnd;
-	}
-	var subscribe = "{{.communicateId}}"
-	var user = "{{.userName}}"
+    var subscribe = "{{.communicateId}}"
+    var user = "{{.userName}}"
 
-	var dom = document.getElementById('messageshow')
-	var newMessage = `
+    var dom = document.getElementById('messageshow')
+    var newMessage = `
 		<div class="messageline">
 			<span class="from">
 				系统:
@@ -296,15 +364,15 @@ input, button {
 			连接中...
 		</div>
 	`
-	dom.innerHTML = dom.innerHTML + newMessage
+    dom.innerHTML = dom.innerHTML + newMessage
 
-	var ctime = 0 //记算记录时间的临时值
+    var ctime = 0 //记算记录时间的临时值
 
-	var bt = new firetower("ws://localhost:8199/ws", function(){
-		console.log('建立连接')
-		bt.subscribe([subscribe])
-		var dom = document.getElementById('messageshow')
-		var newMessage = `
+    var bt = new firetower("ws://myword.server.mydig.net:8199/ws", function () {
+        console.log('建立连接')
+        bt.subscribe([subscribe])
+        var dom = document.getElementById('messageshow')
+        var newMessage = `
 			<div class="messageline">
 				<span class="from">
 					系统:
@@ -312,130 +380,100 @@ input, button {
 				连接成功。欢迎进入！
 			</div>
 		`
-		dom.innerHTML = dom.innerHTML + newMessage
+        dom.innerHTML = dom.innerHTML + newMessage
 
-		ajax({
-			type:"get",
-			url:"http://127.0.0.1:8199/history",
-			data:{"topic":subscribe,"from":user},
-			success:function(data){
-				hlist = JSON.parse(data)
+        ajax({
+            type: "get",
+            url: "http://myword.server.mydig.net/history",
+            data: {"topic": subscribe, "from": user},
+            success: function (data) {
+                hlist = JSON.parse(data)
 
-				for(var i = 0; i < hlist.data.length;i++){
+                for (var i = 0; i < hlist.data.length; i++) {
 
-					if (i===0){
-						ctime = hlist.data[i].sendtime
-					}
-					ta = timeAgo(hlist.data[i].sendtime,ctime)
-					ctime = hlist.data[i].sendtime
-					if(ta>5){
-						var dom = document.getElementById('messageshow')
-						newMessage = `
+
+                    //处理时间显示
+                    if (i === 0) {
+                        ctime = hlist.data[i].sendtime
+                    }
+                    ta = timeAgo(hlist.data[i].sendtime, ctime)
+                    ctime = hlist.data[i].sendtime
+                    if (ta > 5) {
+
+                        hlist.data[i].sendtime = new Date(parseInt(hlist.data[i].sendtime) * 1000).toWeiXinString();
+
+                        var dom = document.getElementById('messageshow')
+                        newMessage = `
 						<div class="messageline" align="center"><span>
-								`+getLocalTime(hlist.data[i].sendtime)+`
+								` + hlist.data[i].sendtime + `
 						</span></div>`
 
-						dom.innerHTML = dom.innerHTML + newMessage
-						dom.scrollTop = dom.scrollHeight
-					}
+                        dom.innerHTML = dom.innerHTML + newMessage
+                        dom.scrollTop = dom.scrollHeight
+                    }
 
-					var dom = document.getElementById('messageshow')
-					var newMessage = ``
-
-					if (hlist.data[i].froma == user){
-						newMessage = `
-				<div class="messageline" align="right">
-					<span class="myinfobox radius">
-					`+hlist.data[i].data+`
-					</span>
-					<span class="from">
-						 `+hlist.data[i].froma+`
-					</span>
-				</div>
-			`
-
-					} else {
-						newMessage = `
-				<div class="messageline" align="left">
-					<span class="from">
-						`+hlist.data[i].froma+`
-					</span>
-					<span class="infobox radius">
-					`+hlist.data[i].data+`
-					</span>
-				</div>
-			`
-					}
-					dom.innerHTML = dom.innerHTML + newMessage
-					dom.scrollTop = dom.scrollHeight
-
-				}
-			}
-		})
+                    //判断内容是不是图片，如果是预览出来
+                    dataInfo = hlist.data[i].data
+                    dataInfo = changeImgView(dataInfo);
 
 
-	})
+                    if (hlist.data[i].froma == user) {
 
-	bt.onmessage = function(res){
-		var msg = JSON.parse(res.data)
-		if(msg.type == 'onSubscribe' || msg.type == 'onUnsubscribe'){
-			// 更新在线人数
-			console.log(msg)
+                        outHtml("right", dataInfo);
 
-			document.getElementById('connected').innerHTML = msg.data
-		} else if(msg.type == 'publish'){
+                    } else {
+                        outHtml("", dataInfo);
 
-			console.log("最后发言时间：",ctime)
+                    }
 
-			var dom = document.getElementById('messageshow')
-			var newMessage = ``
 
-			if (msg.from == user){
+                }
+            }
+        })
 
-				newMessage = `
-				<div class="messageline" align="right">
-					<span class="myinfobox radius">
-					`+msg.data+`
-					</span>
-					<span class="from">
-						 `+msg.from+`
-					</span>
-				</div>
-			`
 
-			} else {
-				newMessage = `
-				<div class="messageline" align="left">
-					<span class="from">
-						`+msg.from+`
-					</span>
-					<span class="infobox radius">
-					`+msg.data+`
-					</span>
-				</div>
-			`
-			}
-			dom.innerHTML = dom.innerHTML + newMessage
-			dom.scrollTop = dom.scrollHeight
+    })
 
-		} else if(msg.type == 'timeout'){
+    bt.onmessage = function (res) {
+        var msg = JSON.parse(res.data)
+        if (msg.type == 'onSubscribe' || msg.type == 'onUnsubscribe') {
+            // 更新在线人数
+            console.log(msg)
+
+            document.getElementById('connected').innerHTML = msg.data
+
+        } else if (msg.type == 'publish') {
+
+            console.log("最后发言时间：", ctime)
+
             var dom = document.getElementById('messageshow')
-            var newMessage = `
-				<div class="messageline">
-					<span class="from">
-						`+msg.from+`:
-					</span>
-					`+msg.data+` <font color="#f00" class='point' onclick="bt.publish(subscribe, {from: user, data: '`+msg.data+`', type: 'publish'})">发送失败(超时):点击重试</font>
-				</div>
-			`
-            dom.innerHTML = dom.innerHTML + newMessage
-            dom.scrollTop = dom.scrollHeight
-		}
+            var newMessage = ``
 
-	}
+            //判断内容是不是图片，如果是预览出来
+            msg.data = changeImgView(msg.data);
 
-	bt.onclose = function(){
-		console.log('连接断开')
+            if (msg.from == user) {
+
+                outHtml("right", msg.data);
+
+
+            } else {
+                outHtml("right", msg.data);
+
+            }
+
+
+        } else if (msg.type == 'timeout') {
+
+            msg.data = msg.data + ` <font color="#f00" class='point' onclick="bt.publish(subscribe, {from: user, data: '` + msg.data + `', type: 'publish'})">发送失败(超时):点击重试</font>`
+            outHtml("right", msg.data);
+
+        }
+
+    }
+
+    bt.onclose = function () {
+        console.log('连接断开')
         var dom = document.getElementById('messageshow')
         var newMessage = `
 			<div class="messageline">
@@ -446,76 +484,187 @@ input, button {
 			</div>
 		`
         dom.innerHTML = dom.innerHTML + newMessage
-	}
+    }
 
-	function send(){
-		var dom = document.getElementById('sendInput')
-		if(dom.value == '') {
-			alert('请输入要发送的内容')
-			return
-		}
-		bt.publish(subscribe, {
-			from: user,
-			data: dom.value,
-			type: 'publish'
-		})
-		dom.value = ''
-	}
 
-  document.onkeydown = function (event) {
-      var e = event || window.event
-      if (e && e.keyCode === 13) { //回车键的键值为13
-          send() //调用登录按钮的登录事件
-          document.getElementById("sendInput").focus();
-      }
-  }
+    function changeImgView(dataInfo) {
+        //判断内容是不是图片，如果是预览出来
+        var reg = new RegExp("[a-zA-z]+://.*/upload/.*(\.png|\.jpg|\.jpeg)");
+        isImg = reg.test(dataInfo);
 
-	function ajax(options){
-		//创建一个ajax对象
-		var xhr = new XMLHttpRequest() || new ActiveXObject("Microsoft,XMLHTTP");
-		//数据的处理 {a:1,b:2} a=1&b=2;
-		var str = "";
-		for(var key in options.data){
-			str+="&"+key+"="+options.data[key];
-		}
-		str = str.slice(1)
-		if(options.type == "get"){
-			var url = options.url+"?"+str;
-			xhr.open("get",url);
-			xhr.send();
-		}else if(options.type == "post"){
-			xhr.open("post",options.url);
-			xhr.setRequestHeader("content-type","application/x-www-form-urlencoded");
-			xhr.send(str)
-		}
-		//监听
-		xhr.onreadystatechange = function(){
-			//当请求成功的时候
-			if(xhr.readyState == 4 && xhr.status == 200){
-				var d = xhr.responseText;
-				//将请求的数据传递给成功回调函数
-				options.success&&options.success(d)
-			}else if(xhr.status != 200){
-				//当失败的时候将服务器的状态传递给失败的回调函数
-				options.error&&options.error(xhr.status);
-			}
-		}
-	}
+        if (isImg) {
+            dataInfo = `<a href="` + dataInfo + `" target="_blank"><img width="150px" height="150px" src='` + dataInfo + `'></a>`;
+        }
+        return dataInfo
+    }
 
-	//通过时间戳计算与当前时间的时间差，返回分钟
-	function timeAgo(timeA, timeB) {
-		var time = timeA - timeB;
-		if(null != time && "" != time) {
-			time = parseInt(time / 60.0);
-		}
-		return time;
-	}
+    function sendImg() {
+        document.getElementById('fileInput').click()
+    }
 
-	//按本地时间显示
-	function getLocalTime(nS)
-	{
-		return new Date(parseInt(nS) * 1000).toLocaleString().substr(0,17)
-	}
+    function send() {
+        var dom = document.getElementById('sendInput')
+        if (dom.value == '') {
+            alert('请输入要发送的内容')
+            return
+        }
+        bt.publish(subscribe, {
+            from: user,
+            data: dom.value,
+            type: 'publish'
+        })
+        dom.value = ''
+    }
+
+    document.onkeydown = function (event) {
+        var e = event || window.event
+        if (e && e.keyCode === 13) { //回车键的键值为13
+            send() //调用登录按钮的登录事件
+            document.getElementById("sendInput").focus();
+        }
+    }
+
+    function ajax(options) {
+        //创建一个ajax对象
+        var xhr = new XMLHttpRequest() || new ActiveXObject("Microsoft,XMLHTTP");
+        //数据的处理 {a:1,b:2} a=1&b=2;
+        var str = "";
+        if (options.type != "file") {
+            for (var key in options.data) {
+                str += "&" + key + "=" + options.data[key];
+            }
+            str = str.slice(1)
+        }
+        if (options.type == "get") {
+            var url = options.url + "?" + str;
+            xhr.open("get", url);
+            xhr.send();
+        } else if (options.type == "post") {
+            xhr.open("post", options.url);
+            xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+            xhr.send(str)
+        } else if (options.type == "file") {
+            xhr.open("post", options.url);
+            xhr.send(options.data)
+        }
+        //监听
+        xhr.onreadystatechange = function () {
+            //当请求成功的时候
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var d = xhr.responseText;
+                //将请求的数据传递给成功回调函数
+                options.success && options.success(d)
+            } else if (xhr.status != 200) {
+                //当失败的时候将服务器的状态传递给失败的回调函数
+                options.error && options.error(xhr.status);
+            }
+        }
+    }
+
+    //通过时间戳计算与当前时间的时间差，返回分钟
+    function timeAgo(timeA, timeB) {
+        var time = timeA - timeB;
+        if (null != time && "" != time) {
+            time = parseInt(time / 60.0);
+        }
+        return time;
+    }
+
+    //按本地时间显示
+    function getLocalTime(nS) {
+        return new Date(parseInt(nS) * 1000).toLocaleString().substr(0, 17)
+    }
+
+
+    /*
+对Date的扩展，将 Date 转化为指定格式的String
+月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q)可以用1-2个占位符
+年(y)可以用1-4个占位符，毫秒(S)只能用1个占位符号(是1-3为的数字)
+例子：
+(new Date()).Format("yyyy-MM-dd hh:mm:ss.S")	==> 2006-07-02 08:09:04.423
+(new Date()).Format("yyyy-M-d h:m:s.S")			==> 2006-7-2 8:9:4.18
+*/
+    Date.prototype.format = function (fmt) {
+        const o = {
+            "y+": this.getFullYear(),
+            "M+": this.getMonth() + 1,
+            "d+": this.getDate(),
+            "H+": this.getHours(),
+            "m+": this.getMinutes(),
+            "s+": this.getSeconds(),
+            "S+": this.getMilliseconds(),
+            "q+": Math.floor(this.getMonth() / 3) + 1,
+            "h+": (() => {
+                const hour = this.getHours() % 12;
+                return hour == 0 ? 12 : hour;
+            })(),
+            "E+": (() => {
+                const week = {
+                    "0": "Sunday",
+                    "1": "Monday",
+                    "2": "Tuesday",
+                    "3": "Wednesday",
+                    "4": "Thursday",
+                    "5": "Friday",
+                    "6": "Saturday"
+                };
+                return week[this.getDay() + ""];
+            })(),
+            /*
+            "e+": (()=>{
+                const week = {"0":"Sun","1":"Mon","2":"Tue","3":"Wed","4":"Thu","5":"Fri","6":"Sat"};
+                return week[this.getDay()+""];
+            })(),
+            */
+            "x1": (() => {
+                const week = {"0": "周日", "1": "周一", "2": "周二", "3": "周三", "4": "周四", "5": "周五", "6": "周六"};
+                return week[this.getDay() + ""];
+            })(),
+            "x2": (() => {
+                const hour = ["凌晨", "早上", "下午", "晚上"];
+                const h = this.getHours();
+                if (h == 12) return "中午";
+                return hour[parseInt(h / 6)];
+            })(),
+        }
+        for (var k in o) {
+            if (new RegExp("(" + k + ")", "g").test(fmt)) {
+                const len = RegExp.$1.length;
+                fmt = fmt.replace(RegExp.$1, len == 1 ? o[k] : ("00" + o[k]).substr(-len));
+            }
+        }
+        return fmt;
+    }
+    Date.prototype.toWeiXinString = function () {
+        let str;
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+        const beforeYesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2);
+        const monday = new Date(today);
+        monday.setDate(today.getDate() - (today.getDay() ? today.getDay() - 1 : 6));
+        //注意：date初始化默认是按本地时间初始的，但打印默认却是按GMT时间打印的，也就是说打印出的不是本地现在的时间
+        //LocaleString的打印也有点问题，"0点"会被打印为"上午12点"
+        if (this.getTime() > today.getTime()) {
+            str = "";
+        } else if (this.getTime() > yesterday.getTime()) {
+            str = "昨天";
+        } else if (this.getTime() > beforeYesterday.getTime()) {
+            const week = {"0": "周日", "1": "周一", "2": "周二", "3": "周三", "4": "周四", "5": "周五", "6": "周六"};
+            str = week[this.getDay() + ""];
+            // } else if(this.getTime() > monday.getTime()) {
+            // 	const week = {"0":"周日","1":"周一","2":"周二","3":"周三","4":"周四","5":"周五","6":"周六"};
+            // 	str = week[this.getDay()+""];
+        } else {
+            const hour = ["凌晨", "早上", "下午", "晚上"];
+            const h = this.getHours();
+            if (h == 12) str = "中午";
+            else str = hour[parseInt(h / 6)];
+            str = this.format("MM月dd ") + str;
+        }
+        str += this.format("HH:ss");
+        return str;
+    }
 
 </script>
 </html>

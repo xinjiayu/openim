@@ -6,6 +6,7 @@
 
 # HTTP Server
 [server]
+    WebUrl = "http://myword.server.mydig.net"
 	Address     = ":8199"
 	ServerAgent = "OpenIm"
     ServerRoot =  "public" #web根目录位置

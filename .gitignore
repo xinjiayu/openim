@@ -12,6 +12,7 @@ composer.lock
 gitpush.sh
 pkg/
 bin/
+public/upload/
 cbuild
 */.DS_Store
 main

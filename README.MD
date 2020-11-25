@@ -5,7 +5,6 @@ openim是分布式推送(IM)服务，完全基于websocket封装，围绕topic�
 自身实现订阅管理服务，无需依赖redis
 
 
-
 ##部署架构：
 
 ![openim](document/openim.png)
