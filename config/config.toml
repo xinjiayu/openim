@@ -6,11 +6,18 @@
 
 # HTTP Server
 [server]
-    WebUrl = "http://myword.server.mydig.net"
+
+    #服务器外部访问地址设置
+    apiUrl = "http://myword.server.mydig.net" #http api地址，访问openim的http api地址。
+    websocketServerAddr = "myword.server.mydig.net:8199" #访问websocket的地址，如果有端口加上端口号。
+
+#    apiUrl = "http://127.0.0.1" #http api地址，访问openim的http api地址。
+#    websocketServerAddr = "127.0.0.1:8199" #访问websocket的地址，如果有端口加上端口号。
+
 	Address     = ":8199"
 	ServerAgent = "OpenIm"
     ServerRoot =  "public" #web根目录位置
-    DumpRouterMap    = true #是否打印路由信息
+    DumpRouterMap    = false #是否打印路由信息
 
 
 # Logger.
@@ -39,7 +46,6 @@
 # websocket服务相关连接配置
 
 [websocketServer]
-
     chanLens = 1000 # channal 缓冲区大小
     heartbeat = 30 # 心跳间隔 单位秒(s)
     topicServiceAddr = "0.0.0.0:6666"

@@ -11,9 +11,14 @@ func Index(r *ghttp.Request) {
 	communicateId := r.GetString("communicateId")
 	userName := r.GetString("userName")
 
+	apiUrl := g.Config().GetString("server.apiUrl")
+	websocketServerAddr := g.Config().GetString("server.websocketServerAddr")
+
 	data := g.Map{
-		"communicateId": communicateId,
-		"userName":      userName,
+		"communicateId":       communicateId,
+		"userName":            userName,
+		"apiUrl":              apiUrl,
+		"websocketServerAddr": websocketServerAddr,
 	}
 	if err := r.Response.WriteTpl("index.html", data); err != nil {
 		glog.Error(err.Error())

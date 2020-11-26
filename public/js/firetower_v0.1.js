@@ -98,3 +98,4 @@ function firetower(addr, onopen) {
 		}
 	}
 }
+
