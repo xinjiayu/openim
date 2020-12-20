@@ -6,8 +6,8 @@ cd $WORKSPACE
 mkdir -p var
 
 app=openim
-pidfile=log/$app.pid
-logfile=log/$app.log
+pidfile=var/$app.pid
+logfile=var/$app.log
 
 function check_pid() {
     if [ -f $pidfile ];then

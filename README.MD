@@ -43,3 +43,9 @@ git push origin v0.1.9
 
 ## ##感谢 firetower 项目
 本项目是从[firetower](https://github.com/holdno/firetower) 项目移植过来的。
+
+
+类似的服务：
+
+https://www.goeasy.io/
+

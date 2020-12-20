@@ -429,12 +429,11 @@
 
     })
 
+    //成功接收到信息的处理
     bt.onmessage = function (res) {
         var msg = JSON.parse(res.data)
         if (msg.type == 'onSubscribe' || msg.type == 'onUnsubscribe') {
             // 更新在线人数
-            console.log(msg)
-
             document.getElementById('connected').innerHTML = msg.data
 
         } else if (msg.type == 'publish') {
@@ -449,9 +448,8 @@
 
                 outHtml("right", msg.data);
 
-
             } else {
-                outHtml("right", msg.data);
+                outHtml("", msg.data);
 
             }
 
