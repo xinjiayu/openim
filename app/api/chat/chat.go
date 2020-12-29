@@ -120,11 +120,11 @@ func GetHistory(r *ghttp.Request) {
 
 }
 
-func GetNewTopicCount(r *ghttp.Request) {
-	topic := r.GetString("topic")
+//获取指定from的会话ID列表
+func GetTopicByFrom(r *ghttp.Request) {
 	from := r.GetString("from")
+	glog.Info(from)
 
-	data := topicinfoService.GetTopicNewCount(topic, from)
+	data := topicinfoService.GetTopicByFrom(from)
 	response.JsonExit(r, 0, "新信息数", data)
-
 }

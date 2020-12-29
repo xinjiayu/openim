@@ -22,11 +22,22 @@ func Add(historyData *history.Entity) error {
 	topicInfo.Froma = historyData.Froma
 	topicInfo.Num = 0
 	topicInfo.Sendtime = historyData.Sendtime
+
+	ti, _ := topicinfo.Model.Where("topic", historyData.Topic).Where("froma = ?", historyData.Froma).FindOne()
+	if ti != nil {
+		topicInfo.Num = ti.Num + 1
+	}
+
 	if topicInfo.Froma != "" {
 		if err := topicinfoService.Add(topicInfo); err != nil {
 			glog.Error(err.Error())
 		}
 	}
+
+	//更新topic信息状态
+	topicinfoService.SetReadState(historyData.Topic, historyData.Froma)
+
+	glog.Info("添加topic信息：", topicInfo)
 
 	return nil
 }
@@ -35,16 +46,7 @@ func GetDataBeyTopic(topic, from string) []*history.Entity {
 	data, _ := history.GetTopicAllData("topic", topic)
 
 	//更新topic信息状态
-	topicInfo := new(topicinfo.Entity)
-	topicInfo.Topic = topic
-	topicInfo.Froma = from
-	topicInfo.Num = 0
-	topicInfo.Sendtime = gconv.Int(gtime.Now().Unix())
-	if topicInfo.Froma != "" {
-		if err := topicinfoService.Add(topicInfo); err != nil {
-			glog.Error(err.Error())
-		}
-	}
+	topicinfoService.SetReadState(topic, from)
 
 	return data
 }

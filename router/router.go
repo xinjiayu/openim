@@ -19,7 +19,8 @@ func init() {
 		group.Group("/", func(group *ghttp.RouterGroup) {
 			group.Middleware(middleware.White, middleware.Auth)
 			group.GET("/history", chat.GetHistory)
-			group.GET("/newcount", chat.GetNewTopicCount)
+			//group.GET("/newcount", chat.GetNewTopicCount)
+			group.GET("/topiclist", chat.GetTopicByFrom)
 			group.POST("/upload", chat.Upload)
 
 		})
