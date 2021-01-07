@@ -5,6 +5,7 @@ import (
 	"github.com/gogf/gf/os/gtime"
 	"github.com/gogf/gf/util/gconv"
 	"openim/app/model/topicinfo"
+	"openim/library/tools"
 )
 
 func Add(topicInfoData *topicinfo.Entity) error {
@@ -36,26 +37,39 @@ func SetReadState(topic, from string) error {
 
 }
 
-//func GetTopicNewCount(topic, from string) int {
-//	ti, _ := topicinfo.Model.Where("topic", topic).Where("froma = ?", from).FindOne()
-//	return ti.Num
-//}
-
 //GetTopicByFrom 获取指定用户是否有最新未读记录
 func GetTopicByFrom(from string) []*topicinfo.Entity {
 
-	ti, _ := topicinfo.Model.Where("froma = ?", from).FindAll()
+	topicInfoList := make(map[string]*topicinfo.Entity)
+	checkNewUserTopic(topicInfoList, from)
 
 	var res []*topicinfo.Entity
+	for _, tl := range topicInfoList {
+		res = append(res, tl)
+	}
+	return res
+}
+
+//检查
+func checkNewUserTopic(res map[string]*topicinfo.Entity, from string) {
+
+	ti, _ := topicinfo.Model.FindAll()
 	for _, t := range ti {
-		topiclist, _ := topicinfo.Model.Where("topic = ?", t.Topic).FindAll()
-		for _, topic := range topiclist {
-			if topic.Froma != from {
-				res = append(res, topic)
-			}
+		if t.Froma != from {
+			commId := tools.CreateCommunicateId(gconv.Int(from), gconv.Int(t.Froma))
+			getTopicInfoList(res, from, commId)
+
 		}
 
 	}
+}
 
-	return res
+//getTopicInfoList 获取会话列表
+func getTopicInfoList(res map[string]*topicinfo.Entity, from, topic string) {
+	topiclist, _ := topicinfo.Model.Where("topic = ?", topic).FindAll()
+	for _, t := range topiclist {
+		if t.Froma != from {
+			res[t.Topic] = t
+		}
+	}
 }

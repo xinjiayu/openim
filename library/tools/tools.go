@@ -1,6 +1,9 @@
 package tools
 
 import (
+	"github.com/gogf/gf/crypto/gmd5"
+	"github.com/gogf/gf/os/glog"
+	"github.com/gogf/gf/util/gconv"
 	"reflect"
 )
 
@@ -19,4 +22,17 @@ func IsContains(val interface{}, array interface{}) bool {
 		}
 	}
 	return false
+}
+
+//communicateId
+
+func CreateCommunicateId(fromUser, toUser int) string {
+
+	var commId string = gconv.String(fromUser) + "_" + gconv.String(toUser)
+	if fromUser > toUser {
+		commId = gconv.String(toUser) + "_" + gconv.String(fromUser)
+	}
+	glog.Info(commId)
+	commId, _ = gmd5.Encrypt(commId)
+	return commId
 }
